@@ -1,0 +1,4 @@
+import collections
+inputs = open("/Users/LJin/Documents/txt_files/dracula.txt","r").read()
+ans = collections.Counter(inputs)
+ans2 = {key:ans[key] for key in ans if key.isalpha()}
