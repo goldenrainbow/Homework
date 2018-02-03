@@ -16,4 +16,4 @@ def game(inputs, play="yes"):
             play = input("Do you want to play again? Answer 'yes' or 'no'.")
             while play not in {"yes","no"}:
                 print("you can only answer 'yes' or 'no'!")
-                play = input("Do you want to play again? Answer 'yes' or 'no'.")  
+                play = input("Do you want to play again? Answer 'yes' or 'no'.")

@@ -1,0 +1,28 @@
+#First method:
+def trans(inputs, type="scramble"):
+    str1 = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    str2 = 'bcdefghijklmnopqrstuvwxyzaBCDEFGHIJKLMNOPQRSTUVWXYZA'
+    new_str = ''
+    if type == "scramble":
+        for char in inputs:
+            ind = str1.find(char)
+            new_char = str2[ind]
+            new_str += new_char
+    elif type == "unscramble":
+        for char in inputs:
+            ind = str2.find(char)
+            new_char = str1[ind]
+            new_str += new_char
+    return new_str
+
+#Second method:
+def trans2(FilePath, type="scramble"):
+    inputs = open(FilePath,"r").read()
+    str1 = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    str2 = 'bcdefghijklmnopqrstuvwxyzaBCDEFGHIJKLMNOPQRSTUVWXYZA'
+    if type == "scramble":
+        transtable = str.maketrans(str1, str2)
+    elif type == "unscramble":
+        transtable = str.maketrans(str2, str1)
+    return inputs.translate(transtable)
+trans2("/Users/Ljin/Documents/txt files/trans_input.txt",type="scramble")
