@@ -1,0 +1,22 @@
+def hanggame():
+    #set a counter for total number of counts
+    count = 0
+    #read the word and give hints about how many letters there are
+    word = open("/Users/Ljin/Documents/txt files/trans_input.txt","r").read()
+    letter_num = len(word)
+    state = ["_"] * letter_num
+    print(state)
+    while True:
+        letter = input("What's your guess this time?")
+        for ind, char in enumerate(word):
+            if char == letter:
+                state[ind] = letter
+                print(state, end="\n")
+        if letter not in word:
+            print("Nope!")
+            count += 1
+        if count > 10:
+            print("Maximum # of guesses is 5, and you just failed...")
+            break
+        if "".join(state) == word:
+            print("Congratulations!")
