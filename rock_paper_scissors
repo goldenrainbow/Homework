@@ -1,0 +1,19 @@
+def game(inputs, play="yes"):
+    choice_lst = ["rock","paper","scissors","lizard","Spock"]
+    if inputs not in choice_lst:
+        print("You can only choose from the list of {}".format(choice_lst))
+    else:
+        while play == "yes":
+            a = random.randint(0,4)
+            user_win = {("scissors","paper"),("paper","rock"),("rock","lizard"),("lizard","Spock"),("Spock","scissors"),
+                        ("scissors","lizard"),("lizard","paper"),("paper","Spock"),("Spock","rock"),("rock","scissors")}
+            pair = (inputs, choice_lst[a])
+            print("Computer has {}".format(choice_lst[a]))
+            if pair in user_win:
+                print("You win!")
+            else:
+                print("Computer wins!")
+            play = input("Do you want to play again? Answer 'yes' or 'no'.")
+            while play not in {"yes","no"}:
+                print("you can only answer 'yes' or 'no'!")
+                play = input("Do you want to play again? Answer 'yes' or 'no'.")  
