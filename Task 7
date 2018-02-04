@@ -1,0 +1,17 @@
+def collatz(a,b):  # a, b sets the range for seeds
+    max_count = 1  #number of items in the longest chain
+    seed, max_seed = 1, 1, 1   #seed is the initial number. max_seed is the initial number that generates max_count
+    for seed in range(a,b):
+        count = 1
+        n = seed
+        while n != 1:
+            if n % 2 == 1:
+                n = 3*n + 1
+            elif n % 2 == 0:
+                n = n/2
+            count += 1
+        if count > max_count:
+            max_seed = seed
+            max_count = count
+    return max_seed, max_count
+collatz(1,1000000)
