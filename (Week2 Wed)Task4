@@ -1,0 +1,25 @@
+def generate(n):
+    my_str = ""
+    feed = " abcdefghijklmnopqrstuvwxyz"
+    for j in range(n):
+        i = random.randint(0,26)
+        my_str += feed[i]
+    return my_str
+def get_score(my_str,target):
+    score = 0
+    score = sum([my_str[i] == target[i] for i in range(len(target))])/len(target)
+    return score
+def main(target):
+    my_str, best_str = "", ""
+    best_score, score, tries = 0, 0, 0
+    n = len(target)
+    while my_str != target and tries <100000:
+        my_str = generate(n)
+        score = get_score(my_str,target)
+        if score > best_score:
+            best_score = score
+            best_str = my_str
+        tries += 1
+    print(my_str, tries)
+target = "methinks it is like a weasel"
+main(target)
