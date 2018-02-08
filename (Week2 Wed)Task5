@@ -1,0 +1,12 @@
+import operator
+def calculator(a,b,oper):
+    print(type(a))
+    my_dict = {"+":operator.add, "-":operator.sub, "*":operator.mul, "/":operator.truediv}
+    if not oper in my_dict:
+        print("Please enter a valid operator!")
+    else:
+        try:
+            a_test, b_test = a-1, b-1
+        except TypeError:
+            print("Please enter two numeric values!")
+        return my_dict[oper](a,b)
