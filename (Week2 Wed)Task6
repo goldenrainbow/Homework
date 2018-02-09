@@ -1,0 +1,13 @@
+def log(original_function, logfilename="log.txt"):
+    def new_function(*args, **kwargs):
+        write_str = "Function '%s' called with positional arguments %s and keyword arguments %s. Returning %s \n" % (original_function.__name__, args, kwargs, original_function(*args, **kwargs))
+        with open(logfilename, "w") as logfile:
+            logfile.write(write_str)
+        print(write_str)
+        return original_function(*args, **kwargs)
+
+    return new_function
+
+@log("someotherfilename.txt")
+def my_function(a,b):
+    return a+b
