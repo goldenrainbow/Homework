@@ -1,0 +1,81 @@
+import random
+board = [["_","_","_"],["_","_","_"],["_","_","_"]]
+def show_board(board):
+    for element in board:
+        print(element)
+    print("\n")
+
+def get_available_cell(board):
+    #get all the available cells by saving row col into a list of lists
+    available_cells = []
+    for i in range(3):
+        for j in range(3):
+            if board[i][j]=="_":
+                available_cells.append([i,j])
+    return available_cells
+
+def check_winner(board,player_symbol):
+    win = "no"
+    for i in range(2):
+        #check rows
+        if board[i] == list(player_symbol * 3):
+            win = "yes"
+            break
+        #check columns
+        count = 0
+        for j in range(2):
+            if board[i][j] == player_symbol:
+                count += 1
+        if count == 3:
+            win = "yes"
+            break
+    #check diagonal
+    if board[0][0]==board[1][1]==board[2][2]==player_symbol or board[2][0]==board[1][1]==board[0][2]==player_symbol:
+        win = "yes"
+    if win == "yes" and player_symbol == 'x':
+        print("Player1 won!")
+    elif win == "yes" and player_symbol == 'o':
+        print("Computer won!")
+    return win
+
+def check_available(board,row,col):
+    #check if the input row and col is available. If yes, returns 1. If no, returns 0.
+    if row > 2 or col > 2:
+        print("The board is not that big! Choose another one")
+        return 0
+    if board[row][col] != '_':
+        print("This cell is occupied! Choose another one")
+        return 0
+    return 1
+
+def tic_tac_toe():
+    count = 1
+    win = "no"
+    while win == "no":
+        #decide whose turn it is and what symbol for that person or computer
+        if count % 2 == 1:
+            player = "Player1"
+            symbol = "x"
+        if count % 2 == 0:
+            player = "Computer"
+            symbol = 'o'
+        #take the row or col input from person or computer
+        if player == "Player1":
+            location = input("Where do you want to put your x? ")
+            row, col = int(location[0]), int(location[1])
+            available = check_available(board,row,col)
+        elif player == "Computer":
+            row, col = random.choice(get_available_cell(board))
+            available = 1
+        #update the board, check if there's a winner
+        if available:
+            board[row][col] = symbol
+            count += 1
+            show_board(board)
+            win = check_winner(board,symbol)
+        #if the whole board is filled
+        if count == 10 and win == "no":
+            print("Game Over! Nobody wins")
+            break
+
+tic_tac_toe()
