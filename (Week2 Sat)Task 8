@@ -1,0 +1,27 @@
+import collections
+class Mathiterable():
+    def __init__(self,iterable):
+        self.value = iterable
+
+    def mean(self):
+        return sum(self.value)/len(self.value)
+
+    def median(self):
+        sort_iterable = sorted(self.value)
+        if len(self.value) % 2 == 1:
+            ind = int((len(self.value)-1)/2)
+            return sort_iterable[ind]
+        elif len(self.value) % 2 == 0:
+            ind = int(len(self.value)/2-1)
+            return (sort_iterable[ind]+sort_iterable[ind+1])/2
+
+    def mode(self):
+        my_dict = collections.Counter(self.value)
+        hi_freq = sorted(my_dict.values(),reverse=True)[0]
+        return [k for k in my_dict if my_dict[k] == hi_freq]
+
+#test it
+a = Mathiterable([1,2,2,2,3,4,5,5,6,6,6,7,8])
+a.mean()
+a.median()
+a.mode()
