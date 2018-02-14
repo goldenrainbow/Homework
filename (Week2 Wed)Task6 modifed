@@ -1,0 +1,65 @@
+import pickle
+
+state = [["_","_","_"],["_","_","_"],["_","_","_"]]
+
+def print_current_state():
+    for i in range(3):
+        print(state[i])
+
+def check_winner(lst):
+    val = False
+    for row in lst:
+        if row[0] == row[1] == row[2] and row[0] != "_":
+            val = True
+            break
+    for col in range(3):
+        if lst[0][col] == lst[1][col] == lst[2][col] and lst[0][col] != "_":
+            val = True
+            break
+    if (lst[0][0] == lst[1][1] == lst[2][2] and lst[0][0] != "_") or (lst[0][2] == lst[1][1] == lst[2][0] and lst[0][2] != "_"):
+            val = True
+    return val
+
+def take_input(player):
+    user_input = input("Player{}: where will you play? ".format(player)).split(",")
+    x, y = int(user_input[0]), int(user_input[1])
+    return x, y
+
+def validation(state, x, y):
+    val = 1
+    if x not in range(3) or y not in range(3):
+        print("You are not playing right! Try again!!")
+        val = 0
+    elif state[x][y] == "X" or state[x][y] == "O":
+        print("It's already taken! Try again!!")
+        val = 0
+    return val
+
+def save_game(state):
+    save = input("Do you want to save the game? answer 'y' or 'n'. ")
+    if save == 'y':
+        saved_file = state
+        output = open("tictactoe.txt",'wb')
+        pickle.dump(saved_file, output)
+        output.close()
+        print("Your tictactoe game is saved!")
+
+def tic_tac_toe():
+    for turn in range(9):
+        player = turn % 2 + 1
+        shape = "X" if player == 1 else "O"
+        validated = 0
+        while validated == 0:
+            x, y = take_input(player)
+            validated = validation(state,x,y)
+        state[x][y] = shape
+        print_current_state()
+        if check_winner(state):
+            print("Player{} won!".format(player))
+            save_game(state)
+            break
+        elif turn == 8:
+            print("It's a tie, as usual..")
+            save_game(state)
+
+tic_tac_toe()
