@@ -1,0 +1,129 @@
+## Write each function below according to the docstring.
+
+
+def max_lists(list1, list2):
+    """
+    list1 and list2 have the same length.
+    Return a list which contains, for each index,
+    the maximum element of both list at this index.
+
+    Parameters
+    ----------
+    list1 : {list} of numeric values
+    list2 : {list} of numeric values
+
+    Returns
+    -------
+    {list} : list of maximum values for each index of list1,list2
+
+    Example
+    -------
+    >>> max_lists([1, 4, 8], [3, 1, 9])
+    [3, 4, 9]
+    >>> max_lists([5, 7, 2, 3, 6], [3, 9, 1, 2, 8])
+    [5, 9, 2, 3, 8]
+    """
+    return [item[0] if item[0]>item[1] else item[1] for item in zip(list1,list2)]
+
+
+
+def get_diagonal(mat):
+    """
+    Given a matrix encoded as a 2 dimensional python list, return a list
+    containing all the values in the diagonal starting at the index 0, 0.
+
+    Parameters
+    ----------
+    mat : 2 dimensional list ({list} of {list} of numeric values)
+
+    Returns
+    -------
+    {list} : values in the diagonal
+
+    Example
+    -------
+    E.g.
+    mat = [[1, 2], [3, 4], [5, 6]]
+    | 1  2 |
+    | 3  4 |
+    | 5  6 |
+    get_diagonal(mat) => [1, 4]
+
+    You may assume that the matrix is nonempty.
+
+    >>> get_diagonal([[1, 2], [3, 4], [5, 6]])
+    [1, 4]
+    """
+    diagnol = []
+    for row_id, row in enumerate(mat):
+        for col_id, element in enumerate(row):
+            if row_id == col_id:
+                diagnol.append(element)
+    return diagnol
+
+
+
+def merge_dictionaries(d1, d2):
+    """
+    Return a new dictionary which contains all the keys from d1 and d2 with
+    their associated values. If a key is in both dictionaries, the value should
+    be the sum of the two values.
+
+    Parameters
+    ----------
+    d1 : {dict}
+    d2 : {dict}
+
+    Returns
+    -------
+    {dict} : values in the diagonal
+
+    Example
+    -------
+    >>> d1 = {"a": 1, "b": 5, "c": 1, "e": 8}
+    >>> d2 = {"b": 2, "c": 5, "d": 10, "f": 6}
+    >>> merge_dictionaries(d1,d2) == {"a": 1, "b": 7, "c": 6, "d": 10, "e": 8, "f": 6}
+    True
+    """
+    key_set = set(d1).union(set(d2))
+    d3 = {}
+    for k in key_set:
+        d3[k] = d1.get(k,0) + d2.get(k,0)
+    return d3
+
+
+
+def make_char_dict(filename):
+    """
+    Given a file containing rows of text, create a dictionary with keys
+    of single characters. The value is a list of all the line numbers which
+    start with that letter. The first line should have line number 1.
+    Characters which never are the first letter of a line do not need to be
+    included in your dictionary.
+
+    Parameters
+    ----------
+    filename : {string} indicating path to file
+
+    Returns
+    -------
+    {dict} : keys are {str} and values are {list}
+
+    Example
+    -------
+    >>> result = make_char_dict('data/people.txt')
+    >>> result['j']
+    [2, 19, 20]
+    >>> result['g']
+    [3]
+    """
+    with open(filename) as f:
+        data = f.readlines()
+        my_dict = {}
+        for line_num, line in enumerate(data):
+            if line[0] in my_dict:
+                my_dict[line[0]].append(line_num)
+            else:
+                my_dict[line[0]] = [line_num]
+    return my_dict
+make_char_dict('Documents/txt_files/news_0215.txt')
