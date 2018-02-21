@@ -1,0 +1,135 @@
+from random import shuffle
+import collections
+
+class Card():
+    def __init__(self,value,suit):
+        self.value = value
+        self.suit = suit
+
+    def __str__(self):
+        return "{} of {}".format(self.value,self.suit)
+
+
+class Deck():
+    def __init__(self):
+        self.cards = []
+        self.add_deck()
+        self.shuffle()
+
+    def add_deck(self):
+        numbers = range(1,14)
+        for i in numbers:
+            card1 = Card(i, 'hearts')
+            card2 = Card(i, 'spades')
+            card3 = Card(i, 'clubs')
+            card4 = Card(i, 'diamonds')
+            self.cards.append(card1)
+            self.cards.append(card2)
+            self.cards.append(card3)
+            self.cards.append(card4)
+
+    def shuffle(self):
+        shuffle(self.cards)
+
+    def deal(self):
+        if len(self.cards) > 0:
+            return self.cards.pop(0)
+        else:
+            print("No more cards left to deal.")
+
+
+
+#function to print card object in human readable form
+def print_cards(player,cards):
+    print("\n{} has:\n".format(player))
+    for i in cards:
+        print(i)
+    print("\n")
+
+class Player():
+    def __init__(self,deck,name):
+        self.name = name
+        self.hands = [deck.deal() for _ in range(5)] #attribute 'hands' is a list of card objects
+        self.books = [] #attribute 'books' is a list of numbers that player has all 4 suits
+
+    #check if the player has a book for the cards in hands. if so, add the value to 'books', and remove those
+    #cards from 'hands'
+    def check_books(self):
+        new_hands = []
+        if self.hands:
+            values_dict = collections.Counter([card.value for card in self.hands])
+            self.books.extend([value for value in values_dict if values_dict[value] == 4])
+        if self.books:
+            new_hands = [card for card in self.hands if card.value not in self.books]
+            self.hands = new_hands
+            print_cards(self.name,self.books)
+
+    def __str__(self):
+        return self.name
+
+#as 'rnd' increments, player1 and player2 take turns to draw
+def assign_order(rnd,player1,player2):
+    if rnd % 2 == 1:
+        draw_who, draw_from_who = player1, player2
+    else:
+        draw_who, draw_from_who = player2, player1
+    return draw_who, draw_from_who
+
+def ask_for_card(draw_who):
+    return int(input(("{}, Make a choice: ").format(draw_who.__str__())))
+
+
+def draw_card(choice,deck,draw_who,draw_from_who):
+    drew = 0
+    draw_from_who_keep = []
+    #if draw_from_who has the card that draw_who is asking for, append that card to draw_who's hands
+    for card in draw_from_who.hands:
+        if card.value == choice:
+            draw_who.hands.append(card)
+            drew = 1
+        else:
+            draw_from_who_keep.append(card)
+    #if draw_from_who doesn't have the card, draw_who draw one card from the rest of the deck
+    if drew == 0:
+        print("{} doesn't have this card, draw one card from the ocean ".format(draw_from_who.__str__()))
+        draw_who.hands.append(deck.deal())
+    else:
+        draw_from_who.hands = draw_from_who_keep  #draw_from_who only gets to keep those draw_who didn't ask for
+
+def check_game_over(draw_who,draw_from_who):
+    whole_books = list(range(1,14))
+    current_books = draw_who.books + draw_from_who.books
+    if current_books == whole_books:
+        print("Game Over!")
+        if len(draw_who.books) > len(draw_from_who.books):
+            print("{} won!".format(draw_who.__str__()))
+        elif len(draw_who.books) < len(draw_from_who.books):
+            print("{} won!".format(draw_from_who.__str__()))
+        else:
+            print("It's a tie!")
+        return 1
+    return 0
+
+
+def go_fish():
+    #start the game, set player1 and player2, each gets 5 cards, show their cards, check if there are any books
+    deck = Deck()
+    player1, player2 = Player(deck,"Player1"), Player(deck,"Player2")
+    print_cards(player1,player1.hands)
+    print_cards(player2,player2.hands)
+    player1.check_books()
+    player2.check_books()
+
+    rnd = 1
+    game_over = 0
+    while not game_over:
+        draw_who, draw_from_who = assign_order(rnd,player1,player2)
+        choice = ask_for_card(draw_who)
+        draw_card(choice, deck, draw_who, draw_from_who)
+
+        print_cards(draw_who,draw_who.hands)
+        print_cards(draw_from_who,draw_from_who.hands)
+
+        draw_who.check_books()
+        game_over = check_game_over(draw_who,draw_from_who)
+        rnd += 1
