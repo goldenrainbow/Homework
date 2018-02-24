@@ -1,0 +1,16 @@
+def bayes_function(p2_1,p1,pn2_n1):
+    """ p2_1: probability of event2 knowing event1 happened -> true positive
+        p1: probability of event1 happens
+        p2_n1: probability of event2 knowing event1 not happend(or the opposite of event1 happened) -> false positive
+        return: p1_2 which is probability of event1 knowing event2 happened
+    """
+    pn1 = 1-p1  #calculate probability of event1 not happened
+    p2_n1 = 1-pn2_n1 #calculate false positive
+    return p2_1*p1 / (p2_1*p1 + p2_n1*pn1)
+bayes_function(0.95,0.03,0.1)
+
+from functools import reduce
+def no_share_bday(n):
+    """caculate in n people, at least 2 of them share the same bday. This equals 1-P(nobody share bday)"""
+    return 1-reduce((lambda x,y: x*y), [(365-i)/365 for i in range(n)])
+no_share_bday(23)
